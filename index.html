@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>인사말 주고받기 SPA (접근성 반영)</title>
+  <meta name="description" content="이름을 입력하면 시간에 맞춘 어조의 인사말을 제공하는 웹 접근성(A11y) 준수 싱글 페이지 애플리케이션입니다.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 키보드 사용자를 위한 본문 바로가기 링크 -->
+  <a href="#main-content" class="skip-link">본문 바로가기</a>
+
+  <!-- 시각적인 데코레이션 배경 (스크린리더에서 숨김) -->
+  <div class="background-canvas" aria-hidden="true"></div>
+
+  <!-- 메인 레이아웃 영역 -->
+  <main id="main-content">
+    <div class="card">
+      
+      <!-- 1. 이름 입력 화면 -->
+      <section id="input-screen" class="screen" aria-labelledby="input-title">
+        <h1 id="input-title" class="title">환영합니다</h1>
+        <p class="subtitle">이름을 입력하시면 따뜻한 인사를 건네드립니다.</p>
+        
+        <form id="greeting-form" novalidate>
+          <div class="form-group">
+            <label id="label-name" for="name-input">이름을 입력해 주세요 (필수)</label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="name-input" 
+                placeholder="예: 홍길동" 
+                required 
+                aria-required="true"
+                aria-describedby="name-error"
+                autocomplete="name"
+              >
+            </div>
+            <!-- 에러 발생 시 즉각 알리는 롤 지정 -->
+            <div id="name-error" class="error-message" role="alert" aria-live="assertive"></div>
+          </div>
+          
+          <button type="submit" class="btn" id="submit-btn">
+            인사말 받기 <span aria-hidden="true">→</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- 2. 맞춤 인사말 화면 -->
+      <section id="greeting-screen" class="screen hidden" aria-labelledby="greeting-heading">
+        
+        <!-- 실시간 내용 갱신을 화면 낭독기에 전달하는 라이브 영역 -->
+        <div id="greeting-announcement" role="status" aria-live="polite">
+          <!-- 스크린리더 초점 이동을 위한 tabindex="-1" 설정 -->
+          <h2 id="greeting-heading" class="greeting-title" tabindex="-1"></h2>
+          <p id="greeting-message" class="greeting-text"></p>
+        </div>
+
+        <!-- 분위기 선택 영역 -->
+        <div class="mood-selector" aria-labelledby="mood-section-title">
+          <h3 id="mood-section-title" class="mood-title">인사말 분위기 변경</h3>
+          <div class="mood-options" role="group" aria-label="인사말 분위기 선택">
+            <button type="button" class="mood-btn active" data-mood="default" aria-pressed="true">기본</button>
+            <button type="button" class="mood-btn" data-mood="energetic" aria-pressed="false">활기차게</button>
+            <button type="button" class="mood-btn" data-mood="calm" aria-pressed="false">차분하게</button>
+            <button type="button" class="mood-btn" data-mood="professional" aria-pressed="false">공손하게</button>
+          </div>
+        </div>
+
+        <button type="button" id="back-btn" class="btn btn-secondary">
+          다시 입력하기
+        </button>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
